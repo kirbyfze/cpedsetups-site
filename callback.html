@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>CpedSetups - Auth Callback</title></head>
+<body>
+<h1>Authorization successful</h1>
+<p>You can close this window.</p>
+<script>
+  // Pass code back to app if opened as popup
+  if (window.opener) {
+    window.opener.postMessage(window.location.search, '*');
+  }
+</script>
+</body>
+</html>
