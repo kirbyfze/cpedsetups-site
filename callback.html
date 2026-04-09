@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head><title>CpedSetups - Auth Callback</title></head>
+<head>
+  <title>CpedSetups - Auth Callback</title>
+  <style>
+    body { font-family: sans-serif; padding: 40px; background: #111; color: #eee; }
+    .code-box { background: #222; border: 2px solid #0f0; padding: 20px; margin: 20px 0;
+                font-family: monospace; font-size: 18px; word-break: break-all; border-radius: 8px; }
+    button { background: #0f0; color: #000; border: none; padding: 10px 20px;
+             font-size: 16px; cursor: pointer; border-radius: 4px; }
+  </style>
+</head>
 <body>
-<h1>Authorization successful</h1>
-<p>You can close this window.</p>
-<script>
-  // Pass code back to app if opened as popup
-  if (window.opener) {
-    window.opener.postMessage(window.location.search, '*');
-  }
-</script>
+  <h1>Authorization Callback</h1>
+  <div id="content"></div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const error = params.get('error');
+    const div = document.getElementById('content');
+    if (error) {
+      div.innerHTML = '<p style="color:red">Error: ' + error + '</p>';
+    } else if (code) {
+      div.innerHTML = '<p>Authorization successful! Copy the code below and paste it into the terminal:</p>'
+        + '<div class="code-box" id="code">' + code + '</div>'
+        + '<button onclick="navigator.clipboard.writeText(document.getElementById(\'code\').innerText).then(()=>this.innerText=\'Copied!\')">Copy Code</button>';
+    } else {
+      div.innerHTML = '<p>No code found in URL.</p><p>Full URL: ' + window.location.href + '</p>';
+    }
+  </script>
 </body>
 </html>
